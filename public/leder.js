@@ -12,29 +12,31 @@ async function fetchUsers() {
         });
         table.appendChild(headerRow);
         users.forEach(user => { // For hver bruker i databasen, opprett en tabellrad med brukernavn, fornavn, etternavn, telefon, e-post, rolle og rediger/slett-knapper
-            const row = document.createElement('tr');
-            [user.username, user.first_name, user.last_name, user.phone, user.email, user.role, user.platoon_name, user.company_name].forEach(text => {
-                const td = document.createElement('td');
-                td.textContent = text;
-                row.appendChild(td);
-            });
-            const editButton = document.createElement('button');
-            editButton.textContent = 'Rediger';
-            editButton.addEventListener('click', () => {
-                openModal(user); // Kaller funksjonen for å åpne redigeringsmodalen når knappen klikkes
-            });
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Slett';
-            deleteButton.addEventListener('click', () => {
-                deleteUser(user.id); // Kaller funksjonen for å slette brukeren når knappen klikkes
-            });
-            const tdEdit = document.createElement('td');
-            const tdDelete = document.createElement('td');
-            tdEdit.appendChild(editButton);
-            tdDelete.appendChild(deleteButton);
-            row.appendChild(tdEdit);
-            row.appendChild(tdDelete);
-            table.appendChild(row);
+            if (user.role !== 'Admin') {
+                const row = document.createElement('tr');
+                [user.username, user.first_name, user.last_name, user.phone, user.email, user.role, user.platoon_name, user.company_name].forEach(text => {
+                    const td = document.createElement('td');
+                    td.textContent = text;
+                    row.appendChild(td);
+                });
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Rediger';
+                editButton.addEventListener('click', () => {
+                    openModal(user); // Kaller funksjonen for å åpne redigeringsmodalen når knappen klikkes
+                });
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Slett';
+                deleteButton.addEventListener('click', () => {
+                    deleteUser(user.id); // Kaller funksjonen for å slette bruker når knappen klikkes
+                });
+                const tdEdit = document.createElement('td');
+                const tdDelete = document.createElement('td');
+                tdEdit.appendChild(editButton);
+                tdDelete.appendChild(deleteButton);
+                row.appendChild(tdEdit);
+                row.appendChild(tdDelete);
+                table.appendChild(row);
+            }
         });
         userList.appendChild(table);
     } catch (error) {
@@ -43,13 +45,14 @@ async function fetchUsers() {
 }
 fetchUsers();
 function openModal(user) { // Funksjon for å åpne redigeringsmodalen
-    document.querySelector('.modal').classList.toggle('hidden'); // Bytter tilstanden til skjult for modalen for å vise eller skjule den
+    document.querySelector('.modal').classList.toggle('hidden'); // Bytter tilstanden til hidden-klassen på modalen for å vise eller skjule modalen
     document.getElementById('new_username').value = user.username || '';
     document.getElementById('username').value = user.username || ''; // Setter verdien til brukernavn-inputfeltet til brukernavnet til brukeren som ble klikket på
     document.getElementById('first_name').value = user.first_name || ''; // Setter verdien til fornavn-inputfeltet til fornavnet til brukeren som ble klikket på
     document.getElementById('last_name').value = user.last_name || ''; // Setter verdien til etternavn-inputfeltet til etternavnet til brukeren som ble klikket på
     document.getElementById('phone').value = user.phone || ''; // Setter verdien til telefon-inputfeltet til telefonnummeret til brukeren som ble klikket på
     document.getElementById('email').value = user.email || ''; // Setter verdien til e-post-inputfeltet til e-postadressen til brukeren som ble klikket på
+    document.getElementById('role').disabled = false; // Aktiverer rolle-select-inputfeltet
 }
 async function deleteUser(id) { // Funksjon for å slette bruker
     try {
@@ -62,15 +65,15 @@ async function deleteUser(id) { // Funksjon for å slette bruker
     }
 } 
 function logout() {
-fetch('/logout', { method: 'POST' }) // Sender en POST-forespørsel til logout-ruten
-    .then(response => {
-        if (response.ok) {
-            location.reload(); // Laster inn siden på nytt for å fjerne økten
-        } else {
-            console.error('Logout failed');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-    });
- }
+    fetch('/logout', { method: 'POST' }) // Sender en POST-forespørsel til logout-ruten
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // Laster inn siden på nytt for å fjerne økten
+            } else {
+                console.error('Logg ut mislyktes');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}

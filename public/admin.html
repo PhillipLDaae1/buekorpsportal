@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Hjem</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main>
         <h1>Admin</h1>
-        <div class="">
+        <div>
             <div class="userList">
                 <div id="queryList"></div>
             </div>
-            <div class="modal hidden"> <!-- This is the modal for the edit function (default hidden) -->
-                <button class="modalButton" onclick="openModal()">Close</button>
+            <div class="modal hidden"> <!-- Dette er modalen for redigeringsfunksjonen (standard skjult) -->
+                <button class="modalButton" onclick="openModal()">Lukk</button>
                 <form class="modalForm" action="/updateUser" method="POST">
                     <label for="username">Nåværende Brukernavn</label>
                     <input type="text" name="username" id="username" value="" readonly>
@@ -32,7 +32,7 @@
                     <select name="company" id="company">
                         <option value="1">Kompani 1</option>
                         <option value="2">Kompani 2</option>
-                        <!-- add other companies as needed -->
+                        <!-- legg til andre kompanier ved behov -->
                     </select>
 
                     <label for="platoon">Peletong:</label>
@@ -41,7 +41,7 @@
                         <option value="2">Peletong 2, komp 1</option>
                         <option value="3">Peletong 1, komp 2</option>
                         <option value="4">Peletong 2, komp 2</option>
-                        <!-- add other platoons as needed -->
+                        <!-- legg til andre peletonger ved behov -->
                     </select>
                     <label for="first_name">Fornavn</label>
                     <input type="text" name="first_name" id="first_name" value="">
@@ -56,14 +56,11 @@
             </div>
         </div> 
         <div class="create">
-            <a href="/createUser">Lag ny bruker</a>
-            <button onclick="logout()">Logg ut</button> <!-- Added logout button -->
+            <a href="/createUser">Opprett ny bruker</a>
+            <button onclick="logout()">Logg ut</button> <!-- Lagt til logg ut-knapp -->
         </div>
         
-        <script src="/admin.js" defer></script>
-</main>
-</body>
-</html>
+        <script src="/admin.js" defer ></script>
     </main>
 </body>
 </html>
